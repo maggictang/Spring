@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="customerService" class="advice.CustomerService">
+        <property name="name" value="实验楼"/>
+        <property name="url" value="http://shiyanlou.com"/>
+    </bean>
+
+    <!-- 前置通知 -->
+    <bean id="hijackBeforeMethod" class="advice.HijackBeforeMethod"/>
+    <!-- 后置通知 -->
+    <bean id="hijackAfterMethod" class="advice.HijackAfterMethod"/>
+    <!-- 异常通知 -->
+    <bean id="hijackThrowExceptionMethod" class="advice.HijackThrowExceptionMethod"/>
+    <!-- 环绕通知 -->
+    <bean id="hijackAroundMethod" class="advice.HijackAroundMethod"/>
+
+    <bean id="customerServiceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="customerService"/>
+        <property name="interceptorNames">
+            <list>
+                <!--<value>hijackBeforeMethod</value>-->
+                <!--<value>hijackAfterMethod</value>-->
+                <!--<value>hijackThrowExceptionMethod</value>-->
+                <value>hijackAroundMethod</value>
+            </list>
+        </property>
+    </bean>
+
+
+
+</beans>

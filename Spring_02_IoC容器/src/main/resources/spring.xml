@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="FileNameGenerator" class="bean.FileNameGenerator">
+        <property name="name" value="实验楼"/>
+        <property name="type" value="txt"/>
+    </bean>
+
+    <!-- 内部嵌套的bean:以下方法利用 ref 很好的引用了 Person ，
+         但是，一旦 Person 被用在 Customer 下，也就不会被别的 Bean 引用。
+    -->
+    <bean id="Person" class="innerbean.Person">
+        <property name="name" value="实验楼"/>
+        <property name="address" value="成都"/>
+        <property name="age" value="25"/>
+    </bean>
+
+    <bean id="Customer1" class="innerbean.Customer">
+        <property name="person" ref="Person"/>
+    </bean>
+
+    <!-- 内部Bean也可以通过构造函数注入 -->
+    <bean id="Customer2" class="innerbean.Customer">
+        <constructor-arg>
+            <bean class="innerbean.Person">
+                <property name="name" value="实验楼"/>
+                <property name="age" value="25"/>
+                <property name="address" value="成都"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <!-- 演示bean的作用域 -->
+    <bean id="CustomerServiceSingleton" class="scope.CustomerService"/>
+    <bean id="CustomerServicePrototype" class="scope.CustomerService" scope="prototype"/>
+
+    <!-- 集合类型的Bean -->
+    <bean id="personCollection" class="collection.Person">
+        <property name="name" value="实验楼"/>
+        <property name="address" value="成都"/>
+        <property name="age" value="25"/>
+    </bean>
+
+    <bean id="CustomerCollection" class="collection.Customer">
+        <property name="lists">
+            <list>
+                <value>1</value>
+                <ref bean="personCollection"/>
+                <value>2</value>
+                <bean class="collection.Person">
+                    <property name="name" value="实验楼List"/>
+                    <property name="address" value="成都"/>
+                    <property name="age" value="25"/>
+                </bean>
+            </list>
+        </property>
+
+        <property name="sets">
+            <set>
+                <value>1</value>
+                <ref bean="personCollection"/>
+                <bean class="collection.Person">
+                    <property name="name" value="实验楼Set"/>
+                    <property name="age" value="25"/>
+                    <property name="address" value="成都"/>
+                </bean>
+            </set>
+        </property>
+
+        <property name="maps">
+            <map>
+                <entry key="Key 1" value="1"/>
+                <entry key="Key 2" value-ref="personCollection"/>
+                <entry key="Key 3">
+                    <bean class="collection.Person">
+                        <property name="name" value="实验楼Map"/>
+                        <property name="address" value="成都"/>
+                        <property name="age" value="25"/>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+
+        <property name="pros">
+            <props>
+                <prop key="admin">admin@nospam.com</prop>
+                <prop key="support">support@nospam.com</prop>
+            </props>
+        </property>
+
+    </bean>
+
+
+</beans>
